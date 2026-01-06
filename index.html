@@ -7,36 +7,32 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
         
-        @page {
-            size: A4;
-            margin: 1cm;
-            padding: 0;
-        }
-        
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: 'Crimson Text', serif;
-            background: #0f0a14;
+            background: linear-gradient(to bottom, #0f0a14, #1a1410);
             color: #f4e9d9;
-            padding: 0;
+            padding: 20px;
+            overflow-x: hidden;
         }
 
-        .page {
-            width: 100%;
-            min-height: 100vh;
+        .section {
+            max-width: 800px;
+            margin: 40px auto;
             background: linear-gradient(to bottom, #1a1410 0%, #2a1f1a 100%);
             border: 3px solid #8b4513;
             padding: 30px;
-            page-break-after: always;
-            page-break-inside: avoid;
-            display: flex;
-            flex-direction: column;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1s ease, transform 1s ease;
         }
 
-        .content { 
-            flex: 1;
-            padding: 10px;
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         .header {
@@ -48,9 +44,10 @@
         
         .title {
             font-family: 'Cinzel', serif;
-            font-size: 2em;
+            font-size: 2.5em;
             color: #d4af37;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            text-shadow: 0 0 5px #d4af37;
         }
 
         .img-placeholder {
@@ -58,7 +55,13 @@
             border: 2px solid #8b6914;
             background: #000;
             margin: 20px 0;
-            page-break-inside: avoid;
+            border-radius: 5px;
+            overflow: hidden;
+            transition: transform 0.5s ease;
+        }
+
+        .img-placeholder:hover {
+            transform: scale(1.05);
         }
 
         .img-placeholder img { 
@@ -69,43 +72,57 @@
 
         h2 {
             font-family: 'Cinzel', serif;
-            font-size: 1.4em;
+            font-size: 1.6em;
             color: #d4af37;
-            margin: 20px 0 10px 0;
+            margin: 30px 0 15px 0;
             border-bottom: 2px solid #8b6914;
             text-transform: uppercase;
-            page-break-after: avoid;
+            text-shadow: 0 0 3px #d4af37;
         }
 
         p {
-            margin-bottom: 10px;
-            line-height: 1.6;
+            margin-bottom: 15px;
+            line-height: 1.8;
+            font-size: 1.1em;
         }
 
         .rival-entry {
             display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
-            background: rgba(139, 69, 19, 0.1);
-            padding: 12px;
+            gap: 20px;
+            margin-bottom: 20px;
+            background: rgba(139, 69, 19, 0.15);
+            padding: 15px;
             border: 1px solid #8b4513;
             align-items: center;
             flex-wrap: wrap;
-            page-break-inside: avoid;
+            border-radius: 5px;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .rival-entry:hover {
+            background: rgba(139, 69, 19, 0.3);
+            transform: translateX(10px);
         }
 
         .rival-img-square {
-            width: 120px;
-            height: 120px;
+            width: 140px;
+            height: 140px;
             border: 1px solid #d4af37;
             flex-shrink: 0;
             overflow: hidden;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
         }
 
         .rival-img-square img { 
             width: 100%; 
             height: 100%; 
             object-fit: cover; 
+            transition: transform 0.5s ease;
+        }
+
+        .rival-entry:hover .rival-img-square img {
+            transform: scale(1.1);
         }
 
         .rival-text {
@@ -114,13 +131,13 @@
         }
 
         .important-box {
-            background: rgba(212, 175, 55, 0.08);
+            background: rgba(212, 175, 55, 0.1);
             border-left: 4px solid #d4af37;
-            padding: 12px;
-            margin: 15px 0;
+            padding: 15px;
+            margin: 20px 0;
             font-style: italic;
-            font-size: 0.95em;
-            page-break-inside: avoid;
+            font-size: 1em;
+            border-radius: 5px;
         }
 
         .footer {
@@ -129,104 +146,163 @@
             border-top: 1px solid #8b6914;
             font-size: 0.9em;
             color: #a8906b;
-            margin-top: auto;
+            margin-top: 20px;
         }
 
         ul {
-            margin-left: 20px;
+            margin-left: 25px;
             line-height: 1.8;
+            list-style-type: square;
         }
 
         ul li {
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+        }
+
+        /* Audio Controls */
+        audio {
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        #audio-controls {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        button {
+            background: #8b4513;
+            color: #f4e9d9;
+            border: 1px solid #d4af37;
+            padding: 10px 20px;
+            font-family: 'Cinzel', serif;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #d4af37;
+            color: #0f0a14;
         }
     </style>
+    <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const sections = document.querySelectorAll('.section');
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
 </head>
 <body>
+    <div id="audio-controls">
+        <audio controls loop>
+            <source src="fantasy-ambience.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <p>Play this ambient fantasy music while reading for an immersive experience! (Download "Fantasy Ambience" from https://www.fesliyanstudios.com/royalty-free-music/download/fantasy-ambience/1702 and add it to your GitHub repo as "fantasy-ambience.mp3")</p>
+        <button onclick="document.querySelector('audio').play()">Play Music</button>
+        <button onclick="document.querySelector('audio').pause()">Pause Music</button>
+    </div>
 
-    <!-- Page 1 -->
-    <div class="page">
-        <div class="content">
-            <div class="header">
-                <div class="title">Call of the Netherdeep</div>
-                <p>An Orientation Guide for Adventurers</p>
-            </div>
-            <div class="img-placeholder">
-                <img src="https://i.postimg.cc/zXV4q2jz/20220718.png" alt="Campaign Banner">
-            </div>
-            <h2>The Kryn Dynasty</h2>
-            <p>Dominating the wastes of Xhorhas, the <strong>Kryn Dynasty</strong> was founded by the drow queen Leylas Kryn—the Bright Queen—who led her people away from the Underdark and the rule of Lolth the Spider Queen. Today, it is a diverse nation where drow, orcs, goblinoids, tieflings, and humans live as equals. Many roam the wastes as nomads in clans, hunting Xhorhasian megafauna.</p>
-            <h2>The Settlement of Jigow</h2>
-            <p>Your journey begins in <strong>Jigow</strong>, a coastal settlement formed by a string of villages. Governed by two elders—a goblin and an orc—it is a place of friendly rivalry. The Dynasty's military, the <strong>Aurora Watch</strong>, maintains a presence here under the command of Taskhand Durth Mirimm.</p>
-            <div class="img-placeholder">
-                <img src="https://i.postimg.cc/PfKfw397/Wildemount-Map.jpg" alt="World Map">
-            </div>
+    <!-- Section 1 -->
+    <div class="section">
+        <div class="header">
+            <div class="title">Call of the Netherdeep</div>
+            <p>An Orientation Guide for Adventurers</p>
+        </div>
+        <div class="img-placeholder">
+            <img src="https://i.postimg.cc/zXV4q2jz/20220718.png" alt="Campaign Banner">
+        </div>
+        <h2>The Kryn Dynasty</h2>
+        <p>In the shadowed expanses of Xhorhas, where ancient wastes stretch under eternal skies, rises the mighty Kryn Dynasty. Founded by the visionary drow queen Leylas Kryn—the eternal Bright Queen—she led her followers from the oppressive depths of the Underdark, breaking free from the venomous grasp of Lolth the Spider Queen. Now, this thriving realm pulses with diversity: proud drow stand alongside fierce orcs, cunning goblinoids, enigmatic tieflings, and resilient humans, all united as equals. Nomadic clans roam the wilds, chasing the thunderous herds of Xhorhasian megafauna, their hunts echoing tales of survival and glory.</p>
+        <h2>The Settlement of Jigow</h2>
+        <p>Your epic saga ignites in Jigow, a vibrant coastal haven woven from a tapestry of villages. Ruled by two wise elders—a shrewd goblin and a stalwart orc—this lively community thrives on spirited rivalries and unbreakable bonds. The Kryn Dynasty's vigilant guardians, the Aurora Watch, stand sentinel here, commanded by the formidable Taskhand Durth Mirimm, ensuring the fragile peace amid the whispers of the wastes.</p>
+        <div class="img-placeholder">
+            <img src="https://i.postimg.cc/PfKfw397/Wildemount-Map.jpg" alt="World Map">
         </div>
         <div class="footer">"The Dynasty stands united under the light of the Luxon."</div>
     </div>
 
-    <!-- Page 2 -->
-    <div class="page">
-        <div class="content">
-            <h2>The Festival of Merit</h2>
-            <p>Townsfolk in Jigow are competitive by nature. You have arrived for the <strong>Festival of Merit</strong>, where you will share the grounds with another group of local aspiring heroes.</p>
-            <div class="rival-entry">
-                <div class="rival-img-square"><img src="https://i.postimg.cc/4NqqyvL9/002-00-003-ayo-jabe.png" alt="Ayo Jabe"></div>
-                <div class="rival-text"><strong>Ayo Jabe (Water Genasi):</strong> A headstrong hunter and leader. She is impulsive and protective of her companions.</div>
-            </div>
-            <div class="rival-entry">
-                <div class="rival-img-square"><img src="https://i.postimg.cc/QxwwCg4W/003-00-004-dermot-wurder.png" alt="Dermot Wurder"></div>
-                <div class="rival-text"><strong>Dermot Wurder (Goblin):</strong> A thoughtful cleric who prioritises the safety of his friends. He is the emotional anchor.</div>
-            </div>
-            <div class="rival-entry">
-                <div class="rival-img-square"><img src="https://i.postimg.cc/DyHH0QjW/004-00-005-galsariad-ardyth.png" alt="Galsariad Ardyth"></div>
-                <div class="rival-text"><strong>Galsariad Ardyth (Drow):</strong> A wizard with a keen mind and an interest in history. He carries a certain dry wit.</div>
-            </div>
-            <div class="rival-entry">
-                <div class="rival-img-square"><img src="https://i.postimg.cc/7Yddh1sx/005-00-006-irvan-wastewalker.png" alt="Irvan Wastewalker"></div>
-                <div class="rival-text"><strong>Irvan Wastewalker (Human):</strong> A nomad who has travelled the wastes. He is laid-back and skilled with a blade.</div>
-            </div>
-            <div class="rival-entry">
-                <div class="rival-img-square"><img src="https://i.postimg.cc/rFK7qZJp/006-00-007-maggie-keeneyes.png" alt="Maggie Keeneyes"></div>
-                <div class="rival-text"><strong>Maggie Keeneyes (Ogre):</strong> A tactical strategist who enjoys poetry. She is the steady pillar of her team.</div>
-            </div>
+    <!-- Section 2 -->
+    <div class="section">
+        <h2>The Festival of Merit</h2>
+        <p>In the heart of Jigow, where the air crackles with anticipation and the spirit of competition burns bright, you've arrived just in time for the legendary Festival of Merit. Here, the townsfolk's unyielding drive for excellence transforms everyday rivalries into exhilarating spectacles. You'll share the arena with a band of daring local heroes-in-the-making, each one a force of nature ready to test their mettle against yours.</p>
+        <div class="rival-entry">
+            <div class="rival-img-square"><img src="https://i.postimg.cc/4NqqyvL9/002-00-003-ayo-jabe.png" alt="Ayo Jabe"></div>
+            <div class="rival-text"><strong>Ayo Jabe (Water Genasi):</strong> A fierce and unyielding hunter, born of storm-tossed seas, she leads with raw passion, shielding her allies like a tidal wave crashing against the shore.</div>
+        </div>
+        <div class="rival-entry">
+            <div class="rival-img-square"><img src="https://i.postimg.cc/QxwwCg4W/003-00-004-dermot-wurder.png" alt="Dermot Wurder"></div>
+            <div class="rival-text"><strong>Dermot Wurder (Goblin):</strong> A serene cleric whose quiet wisdom anchors his companions through the fiercest storms, prioritizing their well-being above all else.</div>
+        </div>
+        <div class="rival-entry">
+            <div class="rival-img-square"><img src="https://i.postimg.cc/DyHH0QjW/004-00-005-galsariad-ardyth.png" alt="Galsariad Ardyth"></div>
+            <div class="rival-text"><strong>Galsariad Ardyth (Drow):</strong> A scholarly wizard from the depths, his sharp intellect and fascination with ancient lore are laced with a wry, enigmatic humor that disarms as much as it delights.</div>
+        </div>
+        <div class="rival-entry">
+            <div class="rival-img-square"><img src="https://i.postimg.cc/7Yddh1sx/005-00-006-irvan-wastewalker.png" alt="Irvan Wastewalker"></div>
+            <div class="rival-text"><strong>Irvan Wastewalker (Human):</strong> A wandering nomad forged by the unforgiving wastes, his easygoing charm belies a deadly precision with the blade, honed through endless trials.</div>
+        </div>
+        <div class="rival-entry">
+            <div class="rival-img-square"><img src="https://i.postimg.cc/rFK7qZJp/006-00-007-maggie-keeneyes.png" alt="Maggie Keeneyes"></div>
+            <div class="rival-text"><strong>Maggie Keeneyes (Ogre):</strong> A colossal tactician with a poet's soul, her strategic brilliance and unshakeable resolve make her the unbreakable foundation of her crew.</div>
         </div>
         <div class="footer">"In Jigow, competition is the language of friendship."</div>
     </div>
 
-    <!-- Page 3 -->
-    <div class="page">
-        <div class="content">
-            <h2>The Luxon & Consecution</h2>
-            <p>The official deity of the Dynasty is the <strong>Luxon</strong>, an entity of rebirth. Through <strong>Consecution</strong>, souls are prepared for rebirth, gaining knowledge through many lifetimes.</p>
-            <div class="important-box">
-                <strong>Rebirth:</strong> If a consecuted follower dies within 100 miles of a Luxon beacon, their soul is ensnared and reincarnated within a newborn nearby.
-            </div>
-            <div class="img-placeholder">
-                <img src="https://i.postimg.cc/SN33RLTk/007-00-008-xhorhas-adventurers.png" alt="Xhorhas Adventurers">
-            </div>
-            <h2>Character Questions</h2>
-            <ul>
-                <li><strong>What's one small heroic deed you've already accomplished?</strong></li>
-                <li><strong>Do you give your trust easily, or do people have to earn it?</strong></li>
-                <li><strong>What do you want more than anything else? How will adventuring help?</strong></li>
-            </ul>
-            <h2>Setting Your Goals</h2>
-            <p>Think about what drives your character forward. Consider creating goals across three timescales:</p>
-            <ul>
-                <li><strong>Short-term goals</strong> should be easily attainable within the next few sessions—things like earning enough coin to buy better armour, proving yourself in the Festival of Merit, or making a good impression on one of the rival adventurers.</li>
-                <li><strong>Medium-term goals</strong> require more effort and time—perhaps establishing a reputation in Jigow, uncovering a piece of your character's mysterious past, or mastering a particular skill or spell.</li>
-                <li><strong>Long-term goals</strong> can be grand and even vague—becoming a legendary hero, discovering the truth about the Luxon, defeating a great evil, or changing the fate of the Dynasty itself.</li>
-            </ul>
-            <div class="important-box">
-                You don't need to write these down here, but keep them in mind as your character grows. Goals can change as your story unfolds!
-            </div>
-            <div class="important-box">
-                <strong>Character Tip:</strong> The wastes are rugged. <strong>Athletics</strong> and <strong>Survival</strong> will serve you well in the days to come.
-            </div>
+    <!-- Section 3 -->
+    <div class="section">
+        <h2>The Luxon & Consecution</h2>
+        <p>At the core of the Dynasty's faith shines the Luxon, a radiant entity of eternal light and profound rebirth. Through the sacred rite of Consecution, devoted souls are forged anew, accumulating wisdom across lifetimes in a cycle of endless enlightenment.</p>
+        <div class="important-box">
+            <strong>Rebirth:</strong> Should a consecuted soul perish within the sacred radius of a Luxon beacon—100 miles—their essence is captured and reborn in a newborn form nearby, carrying forward the echoes of past lives.
+        </div>
+        <div class="img-placeholder">
+            <img src="https://i.postimg.cc/SN33RLTk/007-00-008-xhorhas-adventurers.png" alt="Xhorhas Adventurers">
+        </div>
+        <h2>Character Questions</h2>
+        <p>As you forge your hero's path, ponder these sparks of introspection to breathe life into their legend:</p>
+        <ul>
+            <li><strong>What's one small heroic deed you've already accomplished?</strong> Recall a moment where your courage changed the tide, no matter how humble.</li>
+            <li><strong>Do you give your trust easily, or do people have to earn it?</strong> Reflect on the bonds that define you—forged in fire or given freely?</li>
+            <li><strong>What do you want more than anything else? How will adventuring help?</strong> Unveil your deepest desire and the perilous roads that lead to its fulfillment.</li>
+        </ul>
+        <h2>Setting Your Goals</h2>
+        <p>Envision the flames that propel your character through peril and triumph. Craft ambitions that span the horizons of time:</p>
+        <ul>
+            <li><strong>Short-term goals</strong> beckon like treasures within reach—perhaps amassing gold for gleaming armor, claiming victory in the Festival of Merit, or forging an alliance with a rival that sparks unexpected kinship.</li>
+            <li><strong>Medium-term goals</strong> demand grit and cunning—carve your name into Jigow's lore, unravel the veils of your enigmatic past, or master arcane arts that bend reality to your will.</li>
+            <li><strong>Long-term goals</strong> soar like legends untold—ascend as an immortal hero, pierce the mysteries of the Luxon, vanquish shadows that threaten the world, or reshape the very destiny of the Dynasty.</li>
+        </ul>
+        <div class="important-box">
+            No need to etch these in stone—let them evolve as your tale unfolds, twisting with every choice and revelation!
+        </div>
+        <div class="important-box">
+            <strong>Character Tip:</strong> The wastes whisper dangers untold. Hone your <strong>Athletics</strong> and <strong>Survival</strong> skills—they'll be your lifeline in the trials ahead.
         </div>
         <div class="footer">"The Festival of Merit awaits. Answer the call."</div>
     </div>
 
+    <!-- What the Characters Know Section -->
+    <div class="section">
+        <h2>What You Know: Echoes of the World</h2>
+        <p>As heirs to Exandria's vast tapestry, your characters enter this saga armed with ancient truths. Share these whispers with your allies as you weave your backstories:</p>
+        <p><strong>Kryn Dynasty:</strong> This beacon of power in Xhorhas was born from rebellion. Queen Leylas Kryn, the Bright Queen, guided her drow followers from the Underdark's shadows, escaping Lolth's cruel web. Today, it's a mosaic of souls—drow, orcs, goblinoids, tieflings, humans—living as one. Nomads wander the wilds in clans, pursuing colossal beasts that roam the land.</p>
+        <p><strong>Jigow:</strong> Your journey sparks in this coastal mosaic of villages, home to folk from across Xhorhas. Founded by goblin and orc clans, it's steered by two elders—one goblin, one orc. The Aurora Watch, the Dynasty's iron fist, watches over all, led by the drow Taskhand Durth Mirimm. Here, competition fuels the spirit, with friendly feuds igniting in the central hub known as the Jumble.</p>
+        <p><strong>The Luxon:</strong> The Dynasty's guiding light, this deity of rebirth bestows secrets upon the faithful. Through consecution, souls transcend death, reborn with accumulated wisdom across forms—from drow to goblin, bugbear to orc—unlocking deeper truths of existence. (This rite offers no mechanical edge but enriches your character's lore.)</p>
+        <div class="important-box">
+            <strong>Rebirth's Embrace:</strong> A consecuted soul felled within 100 miles of a Luxon beacon is reborn in a newborn Humanoid nearby, carrying the flame of past lives forward.
+        </div>
+        <div class="footer">"Embrace the light, for in rebirth lies eternity."</div>
+    </div>
 </body>
 </html>
