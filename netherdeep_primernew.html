@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Call of the Netherdeep - Player Primer</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+        
+        @page {
+            size: A4;
+            margin: 1cm;
+            padding: 0;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Crimson Text', serif;
+            background: #0f0a14;
+            color: #f4e9d9;
+            padding: 0;
+        }
+
+        .page {
+            width: 100%;
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #1a1410 0%, #2a1f1a 100%);
+            border: 3px solid #8b4513;
+            padding: 30px;
+            page-break-after: always;
+            page-break-inside: avoid;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content { 
+            flex: 1;
+            padding: 10px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 3px double #d4af37;
+            padding-bottom: 10px;
+        }
+        
+        .title {
+            font-family: 'Cinzel', serif;
+            font-size: 2em;
+            color: #d4af37;
+            letter-spacing: 2px;
+        }
+
+        .img-placeholder {
+            width: 100%;
+            border: 2px solid #8b6914;
+            background: #000;
+            margin: 20px 0;
+            page-break-inside: avoid;
+        }
+
+        .img-placeholder img { 
+            width: 100%; 
+            height: auto;
+            display: block;
+        }
+
+        h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4em;
+            color: #d4af37;
+            margin: 20px 0 10px 0;
+            border-bottom: 2px solid #8b6914;
+            text-transform: uppercase;
+            page-break-after: avoid;
+        }
+
+        p {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .rival-entry {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            background: rgba(139, 69, 19, 0.1);
+            padding: 12px;
+            border: 1px solid #8b4513;
+            align-items: center;
+            flex-wrap: wrap;
+            page-break-inside: avoid;
+        }
+
+        .rival-img-square {
+            width: 120px;
+            height: 120px;
+            border: 1px solid #d4af37;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .rival-img-square img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+        }
+
+        .rival-text {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .important-box {
+            background: rgba(212, 175, 55, 0.08);
+            border-left: 4px solid #d4af37;
+            padding: 12px;
+            margin: 15px 0;
+            font-style: italic;
+            font-size: 0.95em;
+            page-break-inside: avoid;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 15px 10px;
+            border-top: 1px solid #8b6914;
+            font-size: 0.9em;
+            color: #a8906b;
+            margin-top: auto;
+        }
+
+        ul {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+
+        ul li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Page 1 -->
+    <div class="page">
+        <div class="content">
+            <div class="header">
+                <div class="title">Call of the Netherdeep</div>
+                <p>An Orientation Guide for Adventurers</p>
+            </div>
+            <div class="img-placeholder">
+                <img src="https://i.postimg.cc/zXV4q2jz/20220718.png" alt="Campaign Banner">
+            </div>
+            <h2>The Kryn Dynasty</h2>
+            <p>Dominating the wastes of Xhorhas, the <strong>Kryn Dynasty</strong> was founded by the drow queen Leylas Kryn—the Bright Queen—who led her people away from the Underdark and the rule of Lolth the Spider Queen. Today, it is a diverse nation where drow, orcs, goblinoids, tieflings, and humans live as equals. Many roam the wastes as nomads in clans, hunting Xhorhasian megafauna.</p>
+            <h2>The Settlement of Jigow</h2>
+            <p>Your journey begins in <strong>Jigow</strong>, a coastal settlement formed by a string of villages. Governed by two elders—a goblin and an orc—it is a place of friendly rivalry. The Dynasty's military, the <strong>Aurora Watch</strong>, maintains a presence here under the command of Taskhand Durth Mirimm.</p>
+            <div class="img-placeholder">
+                <img src="https://i.postimg.cc/vHkkT7qr/900.jpg" alt="World Map">
+            </div>
+        </div>
+        <div class="footer">"The Dynasty stands united under the light of the Luxon."</div>
+    </div>
+
+    <!-- Page 2 -->
+    <div class="page">
+        <div class="content">
+            <h2>The Festival of Merit</h2>
+            <p>Townsfolk in Jigow are competitive by nature. You have arrived for the <strong>Festival of Merit</strong>, where you will share the grounds with another group of local aspiring heroes.</p>
+            <div class="rival-entry">
+                <div class="rival-img-square"><img src="https://i.postimg.cc/4NqqyvL9/002-00-003-ayo-jabe.png" alt="Ayo Jabe"></div>
+                <div class="rival-text"><strong>Ayo Jabe (Water Genasi):</strong> A headstrong hunter and leader. She is impulsive and protective of her companions.</div>
+            </div>
+            <div class="rival-entry">
+                <div class="rival-img-square"><img src="https://i.postimg.cc/QxwwCg4W/003-00-004-dermot-wurder.png" alt="Dermot Wurder"></div>
+                <div class="rival-text"><strong>Dermot Wurder (Goblin):</strong> A thoughtful cleric who prioritises the safety of his friends. He is the emotional anchor.</div>
+            </div>
+            <div class="rival-entry">
+                <div class="rival-img-square"><img src="https://i.postimg.cc/DyHH0QjW/004-00-005-galsariad-ardyth.png" alt="Galsariad Ardyth"></div>
+                <div class="rival-text"><strong>Galsariad Ardyth (Drow):</strong> A wizard with a keen mind and an interest in history. He carries a certain dry wit.</div>
+            </div>
+            <div class="rival-entry">
+                <div class="rival-img-square"><img src="https://i.postimg.cc/7Yddh1sx/005-00-006-irvan-wastewalker.png" alt="Irvan Wastewalker"></div>
+                <div class="rival-text"><strong>Irvan Wastewalker (Human):</strong> A nomad who has travelled the wastes. He is laid-back and skilled with a blade.</div>
+            </div>
+            <div class="rival-entry">
+                <div class="rival-img-square"><img src="https://i.postimg.cc/rFK7qZJp/006-00-007-maggie-keeneyes.png" alt="Maggie Keeneyes"></div>
+                <div class="rival-text"><strong>Maggie Keeneyes (Ogre):</strong> A tactical strategist who enjoys poetry. She is the steady pillar of her team.</div>
+            </div>
+        </div>
+        <div class="footer">"In Jigow, competition is the language of friendship."</div>
+    </div>
+
+    <!-- Page 3 -->
+    <div class="page">
+        <div class="content">
+            <h2>The Luxon & Consecution</h2>
+            <p>The official deity of the Dynasty is the <strong>Luxon</strong>, an entity of rebirth. Through <strong>Consecution</strong>, souls are prepared for rebirth, gaining knowledge through many lifetimes.</p>
+            <div class="important-box">
+                <strong>Rebirth:</strong> If a consecuted follower dies within 100 miles of a Luxon beacon, their soul is ensnared and reincarnated within a newborn nearby.
+            </div>
+            <div class="img-placeholder">
+                <img src="https://i.postimg.cc/SN33RLTk/007-00-008-xhorhas-adventurers.png" alt="Xhorhas Adventurers">
+            </div>
+            <h2>Character Questions</h2>
+            <ul>
+                <li><strong>What's one small heroic deed you've already accomplished?</strong></li>
+                <li><strong>Do you give your trust easily, or do people have to earn it?</strong></li>
+                <li><strong>What do you want more than anything else? How will adventuring help?</strong></li>
+            </ul>
+            <h2>Setting Your Goals</h2>
+            <p>Think about what drives your character forward. Consider creating goals across three timescales:</p>
+            <ul>
+                <li><strong>Short-term goals</strong> should be easily attainable within the next few sessions—things like earning enough coin to buy better armour, proving yourself in the Festival of Merit, or making a good impression on one of the rival adventurers.</li>
+                <li><strong>Medium-term goals</strong> require more effort and time—perhaps establishing a reputation in Jigow, uncovering a piece of your character's mysterious past, or mastering a particular skill or spell.</li>
+                <li><strong>Long-term goals</strong> can be grand and even vague—becoming a legendary hero, discovering the truth about the Luxon, defeating a great evil, or changing the fate of the Dynasty itself.</li>
+            </ul>
+            <div class="important-box">
+                You don't need to write these down here, but keep them in mind as your character grows. Goals can change as your story unfolds!
+            </div>
+            <div class="important-box">
+                <strong>Character Tip:</strong> The wastes are rugged. <strong>Athletics</strong> and <strong>Survival</strong> will serve you well in the days to come.
+            </div>
+        </div>
+        <div class="footer">"The Festival of Merit awaits. Answer the call."</div>
+    </div>
+
+</body>
+</html>
