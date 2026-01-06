@@ -97,6 +97,7 @@
             flex-wrap: wrap;
             border-radius: 5px;
             transition: background 0.3s ease, transform 0.3s ease;
+            cursor: pointer; /* Makes it feel interactive */
         }
 
         .rival-entry:hover {
@@ -107,17 +108,19 @@
         .rival-img-square {
             width: 140px;
             height: 140px;
-            border: 1px solid #d4af37;
+            border: 2px solid #d4af37;
             flex-shrink: 0;
             overflow: hidden;
             border-radius: 50%;
             box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+            background: #000;
         }
 
         .rival-img-square img { 
             width: 100%; 
             height: 100%; 
-            object-fit: cover; 
+            object-fit: contain;
+            object-position: center;
             transition: transform 0.5s ease;
         }
 
@@ -159,61 +162,77 @@
             margin-bottom: 10px;
         }
 
-        /* Audio Controls */
-        audio {
-            width: 100%;
-            margin: 20px 0;
-        }
-
-        #audio-controls {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        button {
-            background: #8b4513;
-            color: #f4e9d9;
-            border: 1px solid #d4af37;
-            padding: 10px 20px;
-            font-family: 'Cinzel', serif;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        button:hover {
-            background: #d4af37;
-            color: #0f0a14;
+        /* Hidden audio players for UI sounds */
+        .ui-sound {
+            display: none;
         }
     </style>
     <script>
         window.addEventListener('DOMContentLoaded', (event) => {
+            // Section fade-in animation
             const sections = document.querySelectorAll('.section');
             const observer = new IntersectionObserver(entries => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('visible');
+                        
+                        // Play subtle magical chime when section reveals
+                        const revealSound = document.getElementById('reveal-sound');
+                        revealSound.currentTime = 0;
+                        revealSound.play().catch(e => console.log("Sound play prevented:", e));
                     }
                 });
             }, { threshold: 0.1 });
 
-            sections.forEach(section => {
-                observer.observe(section);
+            sections.forEach(section => observer.observe(section));
+
+            // Hover and click sounds on rival entries
+            const rivals = document.querySelectorAll('.rival-entry');
+            const hoverSound = document.getElementById('hover-sound');
+            const clickSound = document.getElementById('click-sound');
+
+            rivals.forEach(rival => {
+                rival.addEventListener('mouseenter', () => {
+                    hoverSound.currentTime = 0;
+                    hoverSound.play().catch(e => console.log("Hover sound prevented:", e));
+                });
+
+                rival.addEventListener('click', () => {
+                    clickSound.currentTime = 0;
+                    clickSound.play().catch(e => console.log("Click sound prevented:", e));
+                });
             });
+
+            // Auto-play background music
+            const bgAudio = document.getElementById('bg-audio');
+            bgAudio.play().catch(e => console.log("Background autoplay prevented:", e));
         });
     </script>
 </head>
 <body>
-    <div id="audio-controls">
-        <audio controls loop>
-            <source src="fantasy-ambience.mp3" type="audio/mpeg">
-            Your browser does not support the audio element.
-        </audio>
-        <p>Play this ambient fantasy music while reading for an immersive experience! (Download "Fantasy Ambience" from https://www.fesliyanstudios.com/royalty-free-music/download/fantasy-ambience/1702 and add it to your GitHub repo as "fantasy-ambience.mp3")</p>
-        <button onclick="document.querySelector('audio').play()">Play Music</button>
-        <button onclick="document.querySelector('audio').pause()">Pause Music</button>
-    </div>
 
-    <!-- Section 1 -->
+    <!-- Background ambience (hidden, autoplay, loop) -->
+    <audio id="background-music" class="ui-sound" loop autoplay>
+        <source id="bg-audio" src="https://www.fesliyanstudios.com/play-mp3/1702" type="audio/mpeg">
+    </audio>
+
+    <!-- Subtle UI sounds (hidden) -->
+    <!-- Magical chime for section reveal (fantasy "page turn" feel) -->
+    <audio id="reveal-sound" class="ui-sound" preload="auto">
+        <source src="https://cdn.freesound.org/previews/320/320655_5297744-lq.mp3" type="audio/mpeg"> <!-- Subtle magical sparkle/chime -->
+    </audio>
+
+    <!-- Soft fantasy hover (ethereal whoosh/glow) -->
+    <audio id="hover-sound" class="ui-sound" preload="auto">
+        <source src="https://cdn.freesound.org/previews/338/338229_582942-lq.mp3" type="audio/mpeg"> <!-- Button hover from Freesound -->
+    </audio>
+
+    <!-- Crisp wooden/fantasy click -->
+    <audio id="click-sound" class="ui-sound" preload="auto">
+        <source src="https://cdn.freesound.org/previews/269/269698_4029630-lq.mp3" type="audio/mpeg"> <!-- Subtle wooden UI click -->
+    </audio>
+
+    <!-- Rest of your content (same as before) -->
     <div class="section">
         <div class="header">
             <div class="title">Call of the Netherdeep</div>
@@ -232,7 +251,6 @@
         <div class="footer">"The Dynasty stands united under the light of the Luxon."</div>
     </div>
 
-    <!-- Section 2 -->
     <div class="section">
         <h2>The Festival of Merit</h2>
         <p>In the heart of Jigow, where the air crackles with anticipation and the spirit of competition burns bright, you've arrived just in time for the legendary Festival of Merit. Here, the townsfolk's unyielding drive for excellence transforms everyday rivalries into exhilarating spectacles. You'll share the arena with a band of daring local heroes-in-the-making, each one a force of nature ready to test their mettle against yours.</p>
@@ -259,7 +277,6 @@
         <div class="footer">"In Jigow, competition is the language of friendship."</div>
     </div>
 
-    <!-- Section 3 -->
     <div class="section">
         <h2>The Luxon & Consecution</h2>
         <p>At the core of the Dynasty's faith shines the Luxon, a radiant entity of eternal light and profound rebirth. Through the sacred rite of Consecution, devoted souls are forged anew, accumulating wisdom across lifetimes in a cycle of endless enlightenment.</p>
@@ -292,7 +309,6 @@
         <div class="footer">"The Festival of Merit awaits. Answer the call."</div>
     </div>
 
-    <!-- What the Characters Know Section -->
     <div class="section">
         <h2>What You Know: Echoes of the World</h2>
         <p>As heirs to Exandria's vast tapestry, your characters enter this saga armed with ancient truths. Share these whispers with your allies as you weave your backstories:</p>
@@ -304,5 +320,7 @@
         </div>
         <div class="footer">"Embrace the light, for in rebirth lies eternity."</div>
     </div>
+
+    <p style="text-align:center; font-style:italic; margin-top:50px;">Immersive fantasy ambience plays in the background, with subtle magical sounds as you explore the primer!</p>
 </body>
 </html>
