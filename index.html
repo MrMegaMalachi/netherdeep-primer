@@ -118,8 +118,8 @@
         .rival-img-square img { 
             width: 100%; 
             height: 100%; 
-            object-fit: contain;
-            object-position: center;
+            object-fit: cover;
+            object-position: 50% 20%; /* Centers face, prevents head cropping */
             transition: transform 0.5s ease;
         }
 
@@ -178,27 +178,32 @@
             }, { threshold: 0.1 });
             sections.forEach(sec => observer.observe(sec));
 
-            // Start background music on first user interaction
-            const unlockAndPlayMusic = () => {
-                const bg = document.getElementById('bg-audio');
-                bg.play().catch(() => {});
-                document.removeEventListener('touchstart', unlockAndPlayMusic);
-                document.removeEventListener('click', unlockAndPlayMusic);
-                document.removeEventListener('scroll', unlockAndPlayMusic);
-                document.removeEventListener('keydown', unlockAndPlayMusic);
-            };
+            // Force autoplay of your uploaded track immediately on load
+            const audio = document.getElementById('bg-audio');
+            audio.volume = 0.4; // Gentle volume - adjust if you want louder/softer
+            const playPromise = audio.play();
 
-            document.addEventListener('touchstart', unlockAndPlayMusic, { once: true });
-            document.addEventListener('click', unlockAndPlayMusic, { once: true });
-            document.addEventListener('scroll', unlockAndPlayMusic, { once: true });
-            document.addEventListener('keydown', unlockAndPlayMusic, { once: true });
+            if (playPromise !== undefined) {
+                playPromise.catch(() => {
+                    // Autoplay was prevented - fallback to play on first click/scroll
+                    const startAudio = () => {
+                        audio.play();
+                        document.removeEventListener('click', startAudio);
+                        document.removeEventListener('touchstart', startAudio);
+                        document.removeEventListener('scroll', startAudio);
+                    };
+                    document.addEventListener('click', startAudio, { once: true });
+                    document.addEventListener('touchstart', startAudio, { once: true });
+                    document.addEventListener('scroll', startAudio, { once: true });
+                });
+            }
         });
     </script>
 </head>
 <body>
 
-    <!-- Your uploaded background music - loops forever after first interaction -->
-    <audio id="background-music" class="hidden-audio" loop>
+    <!-- Your uploaded ambience - plays immediately and loops -->
+    <audio id="background-music" class="hidden-audio" loop autoplay>
         <source id="bg-audio" src="https://pomf2.lain.la/f/v3dgw2u.mp3" type="audio/mpeg">
         Your browser does not support audio.
     </audio>
@@ -295,8 +300,5 @@
         <div class="footer">"Embrace the light, for in rebirth lies eternity."</div>
     </div>
 
-    <p style="text-align:center; font-style:italic; margin-top:50px; color:#d4af37;">
-        Your chosen ambience plays softly in the background on an endless loop after you scroll, tap, or click once.
-    </p>
 </body>
 </html>
